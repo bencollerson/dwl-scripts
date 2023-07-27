@@ -1,0 +1,8 @@
+#!/bin/sh
+CONFIG="$XDG_CONFIG_HOME/dwl-clipman/config"
+IGNORE='org.keepassxc.KeePassXC'
+MAXITEMS=15
+[ -f "$CONFIG" ] && . "$CONFIG"
+
+fgrep -q "$IGNORE" "$XDG_RUNTIME_DIR/dwl/appid" ||
+	clipman store --no-persist --max-items="$MAXITEMS"

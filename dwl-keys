@@ -1,0 +1,125 @@
+#!/bin/sh
+
+
+usage() {
+	cat <<'EOM'
+dwl-keys
+
+script to generate key strokes
+
+usage:
+
+Add key bindings for the following commands:
+
+	bind `dwl-keys copy`       to Super+C
+	bind `dwl-keys paste`      to Super+V
+	bind `dwl-keys cut`        to Super+X
+	bind `dwl-keys deleteword` to Super+Backspace
+
+Status bar tag clicks can be bound to these commands:
+
+	`dwl-keys view <tagname>`
+	`dwl-keys tag <tagname>`
+
+EOM
+	exit 1
+}
+
+copy() {
+	appid="$1"
+
+	case "$appid" in
+		# special cases for certain apps
+		rdesktop | xfreerdp )
+			xdotool sleep .2 key Escape ctrl+c
+			;;
+
+		foot | footclient )
+			wtype -k XF86Copy
+			;;
+
+		# otherwise default behavior dependng on whether we have an
+		# Xwayland or wayland client
+		*)
+			wtype -M ctrl c
+			;;
+	esac
+}
+
+paste() {
+	appid="$1"
+
+	case "$appid" in
+		rdesktop | xfreerdp )
+			xdotool sleep .2 key Escape ctrl+v
+			;;
+
+		foot | footclient )
+			wtype -k XF86Paste
+			;;
+
+		*)
+			wtype -M ctrl v
+			;;
+	esac
+}
+
+cut() {
+	appid="$1"
+
+	case "$appid" in
+		rdesktop | xfreerdp )
+			xdotool sleep .2 key Escape ctrl+x
+			;;
+
+		*)
+			wtype -M ctrl x
+			;;
+	esac
+}
+
+deleteword() {
+	appid="$1"
+
+	case "$appid" in
+		rdesktop | xfreerdp )
+			xdotool sleep .2 key Escape key ctrl+BackSpace
+			;;
+
+		foot | footclient )
+			wtype -M ctrl w
+			;;
+
+		*)
+			wtype -M ctrl -k backspace
+			;;
+	esac
+}
+
+view() {
+	tag="$1"
+
+	echo "$tag" | grep -Eq '^[a-z]$' && wtype -M win r -m win "$tag"
+}
+
+tag() {
+	tag="$1"
+
+	echo "$tag" | grep -Eq '^[a-z]$' && wtype -M win e -m win "$tag"
+}
+
+command="$1"
+case "$command" in
+	copy | paste | cut | deleteword )
+		read -r appid < $XDG_RUNTIME_DIR/dwl/appid
+		$command "$appid"
+		;;
+
+	tag | view )
+		$command "$2"
+		;;
+
+	*)
+		usage
+		;;
+esac

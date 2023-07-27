@@ -1,0 +1,71 @@
+#!/usr/bin/perl
+
+use Modern::Perl;
+
+my $datadir = "$ENV{XDG_RUNTIME_DIR}/dwl";
+my $titlefile = "$datadir/title";
+my $appidfile = "$datadir/appid";
+my $ctypefile = "$datadir/ctype";
+
+my $titles = {};
+my $appids = {};
+my $ctypes = {};
+my $lasttitle = '';
+my $lastappid = '';
+my $lastctype = -1;
+
+sub writetext {
+	my ($outputfile, $text) = @_;
+
+	open my $out, ">", "$outputfile" or die "failed to open file: '$outputfile' $!";
+	print $out "$text\n";
+	close $out;
+}
+
+sub initfile {
+	my ($file) = @_;
+	writetext($file, '');
+	chmod(0600, $file);
+}
+
+mkdir($datadir);
+initfile($titlefile);
+initfile($appidfile);
+initfile($ctypefile);
+
+while (<>) {
+	chomp;
+	my ($monitor, $key, $value) = (/^\s*(\S+)\s*(\S+)\s*(.*)$/);
+
+	for ($key) {
+		/title/ && do {
+			$titles->{$monitor} = $value;
+			last;
+		};
+		/appid/ && do {
+			$appids->{$monitor} = $value;
+			last;
+		};
+		/ctype/ && do {
+			$ctypes->{$monitor} = $value;
+			last;
+		};
+		/selmon/ && do {
+			if ($value eq '1') {
+				if (exists($titles->{$monitor}) and $lasttitle ne $titles->{$monitor}) {
+					writetext($titlefile, $titles->{$monitor});
+					$lasttitle = $titles->{$monitor};
+				}
+				if (exists($appids->{$monitor}) and $lastappid ne $appids->{$monitor}) {
+					writetext($appidfile, $appids->{$monitor});
+					$lastappid = $appids->{$monitor};
+				}
+				if (exists($ctypes->{$monitor}) and $lastctype ne $ctypes->{$monitor}) {
+					writetext($ctypefile, $ctypes->{$monitor});
+					$lastctype = $ctypes->{$monitor};
+				}
+			}
+			last;
+		};
+	}
+}
