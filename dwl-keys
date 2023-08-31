@@ -38,6 +38,10 @@ copy() {
 			wtype -k XF86Copy
 			;;
 
+		gnumeric )
+			wtype -M ctrl -k Insert
+			;;
+
 		# otherwise default behavior dependng on whether we have an
 		# Xwayland or wayland client
 		*)
@@ -58,6 +62,10 @@ paste() {
 			wtype -k XF86Paste
 			;;
 
+		gnumeric )
+			wtype -M shift -k Insert
+			;;
+
 		*)
 			wtype -M ctrl v
 			;;
@@ -70,6 +78,10 @@ cut() {
 	case "$appid" in
 		rdesktop | xfreerdp )
 			xdotool sleep .2 key Escape ctrl+x
+			;;
+
+		gnumeric )
+			wtype -M shift -k Delete
 			;;
 
 		*)
