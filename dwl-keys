@@ -27,12 +27,10 @@ EOM
 
 copy() {
 	appid="$1"
+	ctype="$2"
 
 	case "$appid" in
 		# special cases for certain apps
-		rdesktop | xfreerdp )
-			xdotool sleep .2 key Escape ctrl+c
-			;;
 
 		foot | footclient )
 			wtype -k XF86Copy
@@ -45,18 +43,20 @@ copy() {
 		# otherwise default behavior dependng on whether we have an
 		# Xwayland or wayland client
 		*)
-			wtype -M ctrl c
+			if [ "$ctype" = "2" ]; then
+				xdotool key ctrl+c
+			else
+				wtype -M ctrl c
+			fi
 			;;
 	esac
 }
 
 paste() {
 	appid="$1"
+	ctype="$2"
 
 	case "$appid" in
-		rdesktop | xfreerdp )
-			xdotool sleep .2 key Escape ctrl+v
-			;;
 
 		foot | footclient )
 			wtype -k XF86Paste
@@ -67,43 +67,51 @@ paste() {
 			;;
 
 		*)
-			wtype -M ctrl v
+			if [ "$ctype" = "2" ]; then
+				xdotool key ctrl+v
+			else
+				wtype -M ctrl v
+			fi
 			;;
 	esac
 }
 
 cut() {
 	appid="$1"
+	ctype="$2"
 
 	case "$appid" in
-		rdesktop | xfreerdp )
-			xdotool sleep .2 key Escape ctrl+x
-			;;
 
 		gnumeric )
 			wtype -M shift -k Delete
 			;;
 
 		*)
-			wtype -M ctrl x
+			if [ "$ctype" = "2" ]; then
+				xdotool key ctrl+x
+			else
+				wtype -M ctrl x
+			fi
 			;;
 	esac
 }
 
 deleteword() {
 	appid="$1"
+	ctype="$2"
 
 	case "$appid" in
-		rdesktop | xfreerdp )
-			xdotool sleep .2 key Escape key ctrl+BackSpace
-			;;
 
 		foot | footclient )
 			wtype -M ctrl w
 			;;
 
 		*)
-			wtype -M ctrl -k backspace
+			if [ "$ctype" = "2" ]; then
+				xdotool key ctrl+BackSpace
+			else
+				wtype -M ctrl -k backspace
+			fi
 			;;
 	esac
 }
@@ -124,7 +132,8 @@ command="$1"
 case "$command" in
 	copy | paste | cut | deleteword )
 		read -r appid < $XDG_RUNTIME_DIR/dwl/appid
-		$command "$appid"
+		read -r ctype < $XDG_RUNTIME_DIR/dwl/ctype
+		$command "$appid" "$ctype"
 		;;
 
 	tag | view )
