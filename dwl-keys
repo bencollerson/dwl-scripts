@@ -44,7 +44,7 @@ copy() {
 		# Xwayland or wayland client
 		*)
 			if [ "$ctype" = "2" ]; then
-				xdotool key ctrl+c
+				xdotool getactivewindow key --clearmodifiers ctrl+c
 			else
 				wtype -M ctrl c
 			fi
@@ -68,7 +68,7 @@ paste() {
 
 		*)
 			if [ "$ctype" = "2" ]; then
-				xdotool key ctrl+v
+				xdotool getactivewindow key --clearmodifiers ctrl+v
 			else
 				wtype -M ctrl v
 			fi
@@ -88,7 +88,7 @@ cut() {
 
 		*)
 			if [ "$ctype" = "2" ]; then
-				xdotool key ctrl+x
+				xdotool getactivewindow key --clearmodifiers ctrl+x
 			else
 				wtype -M ctrl x
 			fi
@@ -108,7 +108,7 @@ deleteword() {
 
 		*)
 			if [ "$ctype" = "2" ]; then
-				xdotool key ctrl+BackSpace
+				xdotool getactivewindow key --clearmodifiers ctrl+BackSpace
 			else
 				wtype -M ctrl -k backspace
 			fi
