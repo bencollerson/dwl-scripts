@@ -119,13 +119,17 @@ deleteword() {
 view() {
 	tag="$1"
 
-	echo "$tag" | grep -Eq '^[a-z]$' && wtype -M win r -m win "$tag"
+	echo "$tag" | grep -q '^[a-z]$' || exit
+
+	wtype -M logo r -m logo "$tag"
 }
 
 tag() {
 	tag="$1"
 
-	echo "$tag" | grep -Eq '^[a-z]$' && wtype -M win e -m win "$tag"
+	echo "$tag" | grep -q '^[a-z]$' || exit
+
+	wtype -M logo -M shift R -m shift -m logo "$tag"
 }
 
 command="$1"
