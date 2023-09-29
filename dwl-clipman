@@ -1,4 +1,15 @@
 #!/bin/sh
+
+CLIPMAN_BLOCKFILE="$XDG_RUNTIME_DIR/dwl-clipman-block"
+if [ "$1" = "-b" ]; then
+	touch "$CLIPMAN_BLOCKFILE"
+	exit
+elif [ "$1" = "-u" ]; then
+	rm "$CLIPMAN_BLOCKFILE"
+	exit
+fi
+[ -f "$CLIPMAN_BLOCKFILE" ] && exit
+
 CONFIG="$XDG_CONFIG_HOME/dwl-clipman/config"
 IGNORE='org.keepassxc.KeePassXC'
 MAXITEMS=15
