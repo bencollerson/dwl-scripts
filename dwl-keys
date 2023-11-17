@@ -13,6 +13,10 @@ KEY_R=19
 KEY_V=47
 KEY_W=17
 KEY_X=45
+# or define lots of keys
+# eval $(awk '$2 ~ /^KEY_/ && $3 ~ /^[0-9]*$/ { print $2 "=" $3 }' /usr/include/linux/input-event-codes.h )
+# or even
+# eval $(awk '$2 ~ /^KEY_/ && $3 ~ /^(0x)?[0-9]+$/ { print $2 "=" $3 }' /usr/include/linux/input-event-codes.h )
 
 usage() {
 	cat <<'EOM'
