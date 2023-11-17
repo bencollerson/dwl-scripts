@@ -2,17 +2,22 @@
 
 # scan codes for ydotool
 # from here: /usr/include/linux/input-event-codes.h
-KEY_BACKSPACE=14
-KEY_COPY=133
-KEY_LEFTCTRL=29
-KEY_LEFTMETA=125 # windows key
+
 KEY_LEFTSHIFT=42
-KEY_PASTE=135
+KEY_LEFTCTRL=29
+#KEY_RIGHTALT=100
+KEY_LEFTMETA=125 # windows/super key
+
 KEY_C=46
 KEY_R=19
 KEY_V=47
 KEY_W=17
 KEY_X=45
+
+KEY_BACKSPACE=14
+KEY_COPY=133
+KEY_PASTE=135
+
 # or define lots of keys
 # eval $(awk '$2 ~ /^KEY_/ && $3 ~ /^[0-9]*$/ { print $2 "=" $3 }' /usr/include/linux/input-event-codes.h )
 # or even
@@ -52,8 +57,6 @@ copy() {
 			ydotool key $KEY_COPY:1 $KEY_COPY:0
 			;;
 
-		# otherwise default behavior dependng on whether we have an
-		# Xwayland or wayland client
 		*)
 			ydotool key $KEY_LEFTCTRL:1 $KEY_C:1 $KEY_C:0 $KEY_LEFTCTRL:0
 			;;
@@ -76,14 +79,7 @@ paste() {
 }
 
 cut() {
-	appid="$1"
-
-	case "$appid" in
-
-		*)
-			ydotool key $KEY_LEFTCTRL:1 $KEY_X:1 $KEY_X:0 $KEY_LEFTCTRL:0
-			;;
-	esac
+	ydotool key $KEY_LEFTCTRL:1 $KEY_X:1 $KEY_X:0 $KEY_LEFTCTRL:0
 }
 
 deleteword() {
@@ -121,9 +117,13 @@ tag() {
 
 command="$1"
 case "$command" in
-	copy | paste | cut | deleteword )
+	copy | paste | deleteword )
 		read -r appid < $XDG_RUNTIME_DIR/dwl/appid
 		$command "$appid"
+		;;
+
+	cut )
+		$command
 		;;
 
 	tag | view )
