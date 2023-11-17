@@ -1,5 +1,7 @@
 #!/bin/sh
 
+DELAY=1
+
 # scan codes for ydotool
 # from here: /usr/include/linux/input-event-codes.h
 
@@ -54,11 +56,11 @@ copy() {
 		# special cases for certain apps
 
 		foot | footclient )
-			ydotool key $K_COPY:1 $K_COPY:0
+			ydotool key --key-delay $DELAY $K_COPY:1 $K_COPY:0
 			;;
 
 		*)
-			ydotool key $CTRL:1 $K_C:1 $K_C:0 $CTRL:0
+			ydotool key --key-delay $DELAY $CTRL:1 $K_C:1 $K_C:0 $CTRL:0
 			;;
 	esac
 }
@@ -69,17 +71,17 @@ paste() {
 	case "$appid" in
 
 		foot | footclient )
-			ydotool key $K_PASTE:1 $K_PASTE:0
+			ydotool key --key-delay $DELAY $K_PASTE:1 $K_PASTE:0
 			;;
 
 		*)
-			ydotool key $CTRL:1 $K_V:1 $K_V:0 $CTRL:0
+			ydotool key --key-delay $DELAY $CTRL:1 $K_V:1 $K_V:0 $CTRL:0
 			;;
 	esac
 }
 
 cut() {
-	ydotool key $CTRL:1 $K_X:1 $K_X:0 $CTRL:0
+	ydotool key --key-delay $DELAY $CTRL:1 $K_X:1 $K_X:0 $CTRL:0
 }
 
 deleteword() {
@@ -88,11 +90,11 @@ deleteword() {
 	case "$appid" in
 
 		foot | footclient )
-			ydotool key $CTRL:1 $K_W:1 $K_W:0 $CTRL:0
+			ydotool key --key-delay $DELAY $CTRL:1 $K_W:1 $K_W:0 $CTRL:0
 			;;
 
 		*)
-			ydotool key $CTRL:1 $K_BACKSPACE:1 $K_BACKSPACE:0 $CTRL:0
+			ydotool key --key-delay $DELAY $CTRL:1 $K_BACKSPACE:1 $K_BACKSPACE:0 $CTRL:0
 			;;
 	esac
 }
@@ -102,7 +104,7 @@ view() {
 
 	echo "$tag" | grep -q '^[a-z]$' || exit
 
-	ydotool key $GUI:1 $K_R:1 $K_R:0 $GUI:0
+	ydotool key --key-delay $DELAY $GUI:1 $K_R:1 $K_R:0 $GUI:0
 	ydotool type $tag
 }
 
@@ -111,7 +113,7 @@ tag() {
 
 	echo "$tag" | grep -q '^[a-z]$' || exit
 
-	ydotool key $GUI:1 $SHFT:1 $K_R:1 $K_R:0 $SHFT:0 $GUI:0
+	ydotool key --key-delay $DELAY $GUI:1 $SHFT:1 $K_R:1 $K_R:0 $SHFT:0 $GUI:0
 	ydotool type $tag
 }
 
