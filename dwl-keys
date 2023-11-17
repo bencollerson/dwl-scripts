@@ -3,20 +3,20 @@
 # scan codes for ydotool
 # from here: /usr/include/linux/input-event-codes.h
 
-KEY_LEFTSHIFT=42
-KEY_LEFTCTRL=29
-#KEY_RIGHTALT=100
-KEY_LEFTMETA=125 # windows/super key
+SHFT=42
+CTRL=29
+#ALT=100
+GUI=125 # windows/super key
 
-KEY_C=46
-KEY_R=19
-KEY_V=47
-KEY_W=17
-KEY_X=45
+K_C=46
+K_R=19
+K_V=47
+K_W=17
+K_X=45
 
-KEY_BACKSPACE=14
-KEY_COPY=133
-KEY_PASTE=135
+K_BACKSPACE=14
+K_COPY=133
+K_PASTE=135
 
 # or define lots of keys
 # eval $(awk '$2 ~ /^KEY_/ && $3 ~ /^[0-9]*$/ { print $2 "=" $3 }' /usr/include/linux/input-event-codes.h )
@@ -54,11 +54,11 @@ copy() {
 		# special cases for certain apps
 
 		foot | footclient )
-			ydotool key $KEY_COPY:1 $KEY_COPY:0
+			ydotool key $K_COPY:1 $K_COPY:0
 			;;
 
 		*)
-			ydotool key $KEY_LEFTCTRL:1 $KEY_C:1 $KEY_C:0 $KEY_LEFTCTRL:0
+			ydotool key $CTRL:1 $K_C:1 $K_C:0 $CTRL:0
 			;;
 	esac
 }
@@ -69,17 +69,17 @@ paste() {
 	case "$appid" in
 
 		foot | footclient )
-			ydotool key $KEY_PASTE:1 $KEY_PASTE:0
+			ydotool key $K_PASTE:1 $K_PASTE:0
 			;;
 
 		*)
-			ydotool key $KEY_LEFTCTRL:1 $KEY_V:1 $KEY_V:0 $KEY_LEFTCTRL:0
+			ydotool key $CTRL:1 $K_V:1 $K_V:0 $CTRL:0
 			;;
 	esac
 }
 
 cut() {
-	ydotool key $KEY_LEFTCTRL:1 $KEY_X:1 $KEY_X:0 $KEY_LEFTCTRL:0
+	ydotool key $CTRL:1 $K_X:1 $K_X:0 $CTRL:0
 }
 
 deleteword() {
@@ -88,11 +88,11 @@ deleteword() {
 	case "$appid" in
 
 		foot | footclient )
-			ydotool key $KEY_LEFTCTRL:1 $KEY_W:1 $KEY_W:0 $KEY_LEFTCTRL:0
+			ydotool key $CTRL:1 $K_W:1 $K_W:0 $CTRL:0
 			;;
 
 		*)
-			ydotool key $KEY_LEFTCTRL:1 $KEY_BACKSPACE:1 $KEY_BACKSPACE:0 $KEY_LEFTCTRL:0
+			ydotool key $CTRL:1 $K_BACKSPACE:1 $K_BACKSPACE:0 $CTRL:0
 			;;
 	esac
 }
@@ -102,8 +102,8 @@ view() {
 
 	echo "$tag" | grep -q '^[a-z]$' || exit
 
-	ydotool key $KEY_LEFTMETA:1 $KEY_R:1 $KEY_R:0 $KEY_LEFTMETA:0
-	ydotool type "$tag"
+	ydotool key $GUI:1 $K_R:1 $K_R:0 $GUI:0
+	ydotool type $tag
 }
 
 tag() {
@@ -111,14 +111,14 @@ tag() {
 
 	echo "$tag" | grep -q '^[a-z]$' || exit
 
-	ydotool key $KEY_LEFTMETA:1 $KEY_LEFTSHIFT:1 $KEY_R:1 $KEY_R:0 $KEY_LEFTSHIFT:0 $KEY_LEFTMETA:0
-	ydotool type "$tag"
+	ydotool key $GUI:1 $SHFT:1 $K_R:1 $K_R:0 $SHFT:0 $GUI:0
+	ydotool type $tag
 }
 
 command="$1"
 case "$command" in
 	copy | paste | deleteword )
-		read -r appid < $XDG_RUNTIME_DIR/dwl/appid
+		read -r appid < "$XDG_RUNTIME_DIR/dwl/appid"
 		$command "$appid"
 		;;
 
