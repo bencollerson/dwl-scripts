@@ -40,7 +40,6 @@ EOM
 
 copy() {
 	appid="$1"
-	ctype="$2"
 
 	case "$appid" in
 		# special cases for certain apps
@@ -52,18 +51,13 @@ copy() {
 		# otherwise default behavior dependng on whether we have an
 		# Xwayland or wayland client
 		*)
-			if [ "$ctype" = "2" ]; then
-				xdotool getactivewindow key --clearmodifiers ctrl+c
-			else
-				ydotool key $KEY_LEFTCTRL:1 $KEY_C:1 $KEY_C:0 $KEY_LEFTCTRL:0
-			fi
+			ydotool key $KEY_LEFTCTRL:1 $KEY_C:1 $KEY_C:0 $KEY_LEFTCTRL:0
 			;;
 	esac
 }
 
 paste() {
 	appid="$1"
-	ctype="$2"
 
 	case "$appid" in
 
@@ -72,34 +66,24 @@ paste() {
 			;;
 
 		*)
-			if [ "$ctype" = "2" ]; then
-				xdotool getactivewindow key --clearmodifiers ctrl+v
-			else
-				ydotool key $KEY_LEFTCTRL:1 $KEY_V:1 $KEY_V:0 $KEY_LEFTCTRL:0
-			fi
+			ydotool key $KEY_LEFTCTRL:1 $KEY_V:1 $KEY_V:0 $KEY_LEFTCTRL:0
 			;;
 	esac
 }
 
 cut() {
 	appid="$1"
-	ctype="$2"
 
 	case "$appid" in
 
 		*)
-			if [ "$ctype" = "2" ]; then
-				xdotool getactivewindow key --clearmodifiers ctrl+x
-			else
-				ydotool key $KEY_LEFTCTRL:1 $KEY_X:1 $KEY_X:0 $KEY_LEFTCTRL:0
-			fi
+			ydotool key $KEY_LEFTCTRL:1 $KEY_X:1 $KEY_X:0 $KEY_LEFTCTRL:0
 			;;
 	esac
 }
 
 deleteword() {
 	appid="$1"
-	ctype="$2"
 
 	case "$appid" in
 
@@ -108,11 +92,7 @@ deleteword() {
 			;;
 
 		*)
-			if [ "$ctype" = "2" ]; then
-				xdotool getactivewindow key --clearmodifiers ctrl+BackSpace
-			else
-				ydotool key $KEY_LEFTCTRL:1 $KEY_BACKSPACE:1 $KEY_BACKSPACE:0 $KEY_LEFTCTRL:0
-			fi
+			ydotool key $KEY_LEFTCTRL:1 $KEY_BACKSPACE:1 $KEY_BACKSPACE:0 $KEY_LEFTCTRL:0
 			;;
 	esac
 }
@@ -139,8 +119,7 @@ command="$1"
 case "$command" in
 	copy | paste | cut | deleteword )
 		read -r appid < $XDG_RUNTIME_DIR/dwl/appid
-		read -r ctype < $XDG_RUNTIME_DIR/dwl/ctype
-		$command "$appid" "$ctype"
+		$command "$appid"
 		;;
 
 	tag | view )
