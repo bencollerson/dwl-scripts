@@ -1,5 +1,18 @@
 #!/bin/sh
 
+# scan codes for ydotool
+# from here: /usr/include/linux/input-event-codes.h
+KEY_BACKSPACE=14
+KEY_COPY=133
+KEY_LEFTCTRL=29
+KEY_LEFTMETA=125 # windows key
+KEY_LEFTSHIFT=42
+KEY_PASTE=135
+KEY_C=46
+KEY_R=19
+KEY_V=47
+KEY_W=17
+KEY_X=45
 
 usage() {
 	cat <<'EOM'
@@ -33,11 +46,7 @@ copy() {
 		# special cases for certain apps
 
 		foot | footclient )
-			wtype -k XF86Copy
-			;;
-
-		gnumeric )
-			wtype -M ctrl -k Insert
+			ydotool key $KEY_COPY:1 $KEY_COPY:0
 			;;
 
 		# otherwise default behavior dependng on whether we have an
@@ -46,7 +55,7 @@ copy() {
 			if [ "$ctype" = "2" ]; then
 				xdotool getactivewindow key --clearmodifiers ctrl+c
 			else
-				wtype -M ctrl c
+				ydotool key $KEY_LEFTCTRL:1 $KEY_C:1 $KEY_C:0 $KEY_LEFTCTRL:0
 			fi
 			;;
 	esac
@@ -59,18 +68,14 @@ paste() {
 	case "$appid" in
 
 		foot | footclient )
-			wtype -k XF86Paste
-			;;
-
-		gnumeric )
-			wtype -M shift -k Insert
+			ydotool key $KEY_PASTE:1 $KEY_PASTE:0
 			;;
 
 		*)
 			if [ "$ctype" = "2" ]; then
 				xdotool getactivewindow key --clearmodifiers ctrl+v
 			else
-				wtype -M ctrl v
+				ydotool key $KEY_LEFTCTRL:1 $KEY_V:1 $KEY_V:0 $KEY_LEFTCTRL:0
 			fi
 			;;
 	esac
@@ -82,15 +87,11 @@ cut() {
 
 	case "$appid" in
 
-		gnumeric )
-			wtype -M shift -k Delete
-			;;
-
 		*)
 			if [ "$ctype" = "2" ]; then
 				xdotool getactivewindow key --clearmodifiers ctrl+x
 			else
-				wtype -M ctrl x
+				ydotool key $KEY_LEFTCTRL:1 $KEY_X:1 $KEY_X:0 $KEY_LEFTCTRL:0
 			fi
 			;;
 	esac
@@ -103,14 +104,14 @@ deleteword() {
 	case "$appid" in
 
 		foot | footclient )
-			wtype -M ctrl w
+			ydotool key $KEY_LEFTCTRL:1 $KEY_W:1 $KEY_W:0 $KEY_LEFTCTRL:0
 			;;
 
 		*)
 			if [ "$ctype" = "2" ]; then
 				xdotool getactivewindow key --clearmodifiers ctrl+BackSpace
 			else
-				wtype -M ctrl -k backspace
+				ydotool key $KEY_LEFTCTRL:1 $KEY_BACKSPACE:1 $KEY_BACKSPACE:0 $KEY_LEFTCTRL:0
 			fi
 			;;
 	esac
@@ -121,7 +122,8 @@ view() {
 
 	echo "$tag" | grep -q '^[a-z]$' || exit
 
-	wtype -M logo r -m logo "$tag"
+	ydotool key $KEY_LEFTMETA:1 $KEY_R:1 $KEY_R:0 $KEY_LEFTMETA:0
+	ydotool type "$tag"
 }
 
 tag() {
@@ -129,7 +131,8 @@ tag() {
 
 	echo "$tag" | grep -q '^[a-z]$' || exit
 
-	wtype -M logo -M shift R -m shift -m logo "$tag"
+	ydotool key $KEY_LEFTMETA:1 $KEY_LEFTSHIFT:1 $KEY_R:1 $KEY_R:0 $KEY_LEFTSHIFT:0 $KEY_LEFTMETA:0
+	ydotool type "$tag"
 }
 
 command="$1"
