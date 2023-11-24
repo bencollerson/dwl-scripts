@@ -7,7 +7,7 @@ DELAY=1
 
 SHFT=42
 CTRL=29
-#ALT=100
+ALT=100
 GUI=125 # windows/super key
 
 K_C=46
@@ -59,6 +59,18 @@ copy() {
 			ydotool key --key-delay $DELAY $K_COPY:1 $K_COPY:0
 			;;
 
+		gnome-terminal-server | Alacritty )
+			ydotool key --key-delay $DELAY $CTRL:1 $SHFT:1 $K_C:1 $K_C:0 $SHFT:0 $CTRL:0
+			;;
+
+		URxvt )
+			ydotool key --key-delay $DELAY $CTRL:1 $ALT:1 $K_C:1 $K_C:0 $ALT:0 $CTRL:0
+			;;
+
+		st-256color )
+			ydotool key --key-delay $DELAY $ALT:1 $K_C:1 $K_C:0 $ALT:0
+			;;
+
 		*)
 			ydotool key --key-delay $DELAY $CTRL:1 $K_C:1 $K_C:0 $CTRL:0
 			;;
@@ -72,6 +84,18 @@ paste() {
 
 		foot | footclient )
 			ydotool key --key-delay $DELAY $K_PASTE:1 $K_PASTE:0
+			;;
+
+		gnome-terminal-server | Alacritty )
+			ydotool key --key-delay $DELAY $CTRL:1 $SHFT:1 $K_V:1 $K_V:0 $SHFT:0 $CTRL:0
+			;;
+
+		URxvt )
+			ydotool key --key-delay $DELAY $CTRL:1 $ALT:1 $K_V:1 $K_V:0 $ALT:0 $CTRL:0
+			;;
+
+		st-256color )
+			ydotool key --key-delay $DELAY $ALT:1 $K_V:1 $K_V:0 $ALT:0
 			;;
 
 		*)
