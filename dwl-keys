@@ -56,23 +56,41 @@ copy() {
 		# special cases for certain apps
 
 		foot | footclient )
-			ydotool key --key-delay $DELAY $K_COPY:1 $K_COPY:0
+			ydotool key \
+				--key-delay $DELAY \
+				$K_COPY:1 $K_COPY:0
 			;;
 
 		gnome-terminal-server | Alacritty )
-			ydotool key --key-delay $DELAY $CTRL:1 $SHFT:1 $K_C:1 $K_C:0 $SHFT:0 $CTRL:0
+			ydotool key \
+				--key-delay $DELAY \
+				$CTRL:1 $SHFT:1 \
+				$K_C:1 $K_C:0 \
+				$CTRL:0 $SHFT:0
 			;;
 
 		URxvt )
-			ydotool key --key-delay $DELAY $CTRL:1 $ALT:1 $K_C:1 $K_C:0 $ALT:0 $CTRL:0
+			ydotool key \
+				--key-delay $DELAY \
+				$ALT:1 $CTRL:1 \
+				$K_C:1 $K_C:0 \
+				$ALT:0 $CTRL:0
 			;;
 
 		st-256color )
-			ydotool key --key-delay $DELAY $ALT:1 $K_C:1 $K_C:0 $ALT:0
+			ydotool key \
+				--key-delay $DELAY \
+				$ALT:1 \
+				$K_C:1 $K_C:0 \
+				$ALT:0
 			;;
 
 		*)
-			ydotool key --key-delay $DELAY $CTRL:1 $K_C:1 $K_C:0 $CTRL:0
+			ydotool key \
+				--key-delay $DELAY \
+				$CTRL:1 \
+				$K_C:1 $K_C:0 \
+				$CTRL:0
 			;;
 	esac
 }
@@ -83,29 +101,51 @@ paste() {
 	case "$appid" in
 
 		foot | footclient )
-			ydotool key --key-delay $DELAY $K_PASTE:1 $K_PASTE:0
+			ydotool key \
+				--key-delay $DELAY \
+				$K_PASTE:1 $K_PASTE:0
 			;;
 
 		gnome-terminal-server | Alacritty )
-			ydotool key --key-delay $DELAY $CTRL:1 $SHFT:1 $K_V:1 $K_V:0 $SHFT:0 $CTRL:0
+			ydotool key \
+				--key-delay $DELAY \
+				$CTRL:1 $SHFT:1 \
+				$K_V:1 $K_V:0 \
+				$CTRL:0 $SHFT:0
 			;;
 
 		URxvt )
-			ydotool key --key-delay $DELAY $CTRL:1 $ALT:1 $K_V:1 $K_V:0 $ALT:0 $CTRL:0
+			ydotool key \
+				--key-delay $DELAY \
+				$ALT:1 $CTRL:1 \
+				$K_V:1 $K_V:0 \
+				$ALT:0 $CTRL:0
 			;;
 
 		st-256color )
-			ydotool key --key-delay $DELAY $ALT:1 $K_V:1 $K_V:0 $ALT:0
+			ydotool key \
+				--key-delay $DELAY \
+				$ALT:1 \
+				$K_V:1 $K_V:0 \
+				$ALT:0
 			;;
 
 		*)
-			ydotool key --key-delay $DELAY $CTRL:1 $K_V:1 $K_V:0 $CTRL:0
+			ydotool key \
+				--key-delay $DELAY \
+				$CTRL:1 \
+				$K_V:1 $K_V:0 \
+				$CTRL:0
 			;;
 	esac
 }
 
 cut() {
-	ydotool key --key-delay $DELAY $CTRL:1 $K_X:1 $K_X:0 $CTRL:0
+	ydotool key \
+		--key-delay $DELAY \
+		$CTRL:1 \
+		$K_X:1 $K_X:0 \
+		$CTRL:0
 }
 
 deleteword() {
@@ -114,11 +154,19 @@ deleteword() {
 	case "$appid" in
 
 		foot | footclient )
-			ydotool key --key-delay $DELAY $CTRL:1 $K_W:1 $K_W:0 $CTRL:0
+			ydotool key \
+				--key-delay $DELAY \
+				$CTRL:1 \
+				$K_W:1 $K_W:0 \
+				$CTRL:0
 			;;
 
 		*)
-			ydotool key --key-delay $DELAY $CTRL:1 $K_BACKSPACE:1 $K_BACKSPACE:0 $CTRL:0
+			ydotool key \
+				--key-delay $DELAY \
+				$CTRL:1 \
+				$K_BACKSPACE:1 $K_BACKSPACE:0 \
+				$CTRL:0
 			;;
 	esac
 }
@@ -128,7 +176,11 @@ view() {
 
 	echo "$tag" | grep -q '^[a-z]$' || exit
 
-	ydotool key --key-delay $DELAY $GUI:1 $K_R:1 $K_R:0 $GUI:0
+	ydotool key \
+		--key-delay $DELAY \
+		$GUI:1 \
+		$K_R:1 $K_R:0 \
+		$GUI:0
 	ydotool type $tag
 }
 
@@ -137,7 +189,11 @@ tag() {
 
 	echo "$tag" | grep -q '^[a-z]$' || exit
 
-	ydotool key --key-delay $DELAY $GUI:1 $SHFT:1 $K_R:1 $K_R:0 $SHFT:0 $GUI:0
+	ydotool key \
+		--key-delay $DELAY \
+		$GUI:1 $SHFT:1 \
+		$K_R:1 $K_R:0 \
+		$GUI:0 $SHFT:0
 	ydotool type $tag
 }
 
