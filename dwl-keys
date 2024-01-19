@@ -1,7 +1,5 @@
 #!/bin/sh
 
-DELAY=1
-
 # scan codes for ydotool
 # from here: /usr/include/linux/input-event-codes.h
 
@@ -57,13 +55,11 @@ copy() {
 
 		foot | footclient )
 			ydotool key \
-				--key-delay $DELAY \
 				$K_COPY:1 $K_COPY:0
 			;;
 
 		gnome-terminal-server | Alacritty )
 			ydotool key \
-				--key-delay $DELAY \
 				$CTRL:1 $SHFT:1 \
 				$K_C:1 $K_C:0 \
 				$CTRL:0 $SHFT:0
@@ -71,7 +67,6 @@ copy() {
 
 		URxvt )
 			ydotool key \
-				--key-delay $DELAY \
 				$ALT:1 $CTRL:1 \
 				$K_C:1 $K_C:0 \
 				$ALT:0 $CTRL:0
@@ -79,7 +74,6 @@ copy() {
 
 		st-256color )
 			ydotool key \
-				--key-delay $DELAY \
 				$ALT:1 \
 				$K_C:1 $K_C:0 \
 				$ALT:0
@@ -87,7 +81,6 @@ copy() {
 
 		*)
 			ydotool key \
-				--key-delay $DELAY \
 				$CTRL:1 \
 				$K_C:1 $K_C:0 \
 				$CTRL:0
@@ -102,13 +95,11 @@ paste() {
 
 		foot | footclient )
 			ydotool key \
-				--key-delay $DELAY \
 				$K_PASTE:1 $K_PASTE:0
 			;;
 
 		gnome-terminal-server | Alacritty )
 			ydotool key \
-				--key-delay $DELAY \
 				$CTRL:1 $SHFT:1 \
 				$K_V:1 $K_V:0 \
 				$CTRL:0 $SHFT:0
@@ -116,7 +107,6 @@ paste() {
 
 		URxvt )
 			ydotool key \
-				--key-delay $DELAY \
 				$ALT:1 $CTRL:1 \
 				$K_V:1 $K_V:0 \
 				$ALT:0 $CTRL:0
@@ -124,7 +114,6 @@ paste() {
 
 		st-256color )
 			ydotool key \
-				--key-delay $DELAY \
 				$ALT:1 \
 				$K_V:1 $K_V:0 \
 				$ALT:0
@@ -132,7 +121,6 @@ paste() {
 
 		*)
 			ydotool key \
-				--key-delay $DELAY \
 				$CTRL:1 \
 				$K_V:1 $K_V:0 \
 				$CTRL:0
@@ -142,7 +130,6 @@ paste() {
 
 cut() {
 	ydotool key \
-		--key-delay $DELAY \
 		$CTRL:1 \
 		$K_X:1 $K_X:0 \
 		$CTRL:0
@@ -155,7 +142,6 @@ deleteword() {
 
 		foot | footclient )
 			ydotool key \
-				--key-delay $DELAY \
 				$CTRL:1 \
 				$K_W:1 $K_W:0 \
 				$CTRL:0
@@ -163,7 +149,6 @@ deleteword() {
 
 		*)
 			ydotool key \
-				--key-delay $DELAY \
 				$CTRL:1 \
 				$K_BACKSPACE:1 $K_BACKSPACE:0 \
 				$CTRL:0
@@ -177,7 +162,6 @@ view() {
 	echo "$tag" | grep -q '^[a-z]$' || exit
 
 	ydotool key \
-		--key-delay $DELAY \
 		$GUI:1 \
 		$K_R:1 $K_R:0 \
 		$GUI:0
@@ -190,7 +174,6 @@ tag() {
 	echo "$tag" | grep -q '^[a-z]$' || exit
 
 	ydotool key \
-		--key-delay $DELAY \
 		$GUI:1 $SHFT:1 \
 		$K_R:1 $K_R:0 \
 		$GUI:0 $SHFT:0
