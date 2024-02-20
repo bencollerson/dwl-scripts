@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 
 use Modern::Perl;
+use Switch;
 
 my $datadir = "$ENV{XDG_RUNTIME_DIR}/dwl";
 my $titlefile = "$datadir/title";
@@ -33,16 +34,14 @@ while (<>) {
 	chomp;
 	my ($monitor, $key, $value) = (/^\s*(\S+)\s*(\S+)\s*(.*)$/);
 
-	for ($key) {
-		/title/ && do {
+	switch ($key) {
+		case 'title' {
 			$titles->{$monitor} = $value;
-			last;
-		};
-		/appid/ && do {
+		}
+		case 'appid' {
 			$appids->{$monitor} = $value;
-			last;
-		};
-		/selmon/ && do {
+		}
+		case 'selmon' {
 			if ($value eq '1') {
 				if (exists($titles->{$monitor}) and $lasttitle ne $titles->{$monitor}) {
 					writetext($titlefile, $titles->{$monitor});
@@ -53,7 +52,6 @@ while (<>) {
 					$lastappid = $appids->{$monitor};
 				}
 			}
-			last;
-		};
+		}
 	}
 }
